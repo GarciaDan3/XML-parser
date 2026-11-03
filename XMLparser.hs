@@ -74,10 +74,7 @@ skipDeclarations = do
 parseXML :: Parser XML
 parseXML = (spaces >> skipDeclarations >> spaces) *> parseElement
 
-runMyParser :: Parser a -> String -> Maybe (a, String)
-runMyParser p = runStateT (runParser p)
-
 xmlDocument :: String -> Maybe XML
-xmlDocument input = case runMyParser parseXML input of 
+xmlDocument input = case runStateT (runParser parseXML) input of 
     Just (xml, []) -> Just xml
     _              -> Nothing
